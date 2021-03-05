@@ -3,7 +3,8 @@ layout: full-width
 title: About
 ---
 
- Hi there, I'm Phuc from Vietnam.
+ {% newthought 'Hi there,'%} I'm Phuc from Vietnam.
+
  Currently I'm a Ph.D student at the [ML-Labs](https://ml-labs.ie/) cohort, based in Dublin City University, Ireland.
  I do research related to Deep Learning in Multimedia, especially with video, under the supervison of Professor [Alan Smeaton](https://www.computing.dcu.ie/~asmeaton/index.html) and Professor [Graham Healy](https://www.computing.dcu.ie/~ghealy/).
  I have broad interest from theoretical to practical aspects of building intelligent system, with focus on Representation Learning, Unsupervised / Self-supervised Learning and Differentiable Computing.
