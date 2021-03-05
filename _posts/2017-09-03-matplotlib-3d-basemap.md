@@ -8,6 +8,9 @@ permalink: /posts/2017-09-03-matplotlib-3d-basemap
 
 
 In this tutorial, I will show you how to plot a 3-Dimension Earth Map from satellite data using Basemap and Matplotlib.
+
+<!--more-->
+
 The result will be something like this with interaction:
 
 ![](img/matplotlib-3d-basemap/Elec_dens.png)
@@ -16,6 +19,7 @@ The result will be something like this with interaction:
 > All the sample data and code file can be found here: [https://github.com/lkhphuc/Matplotlib-3D-Basemap](https://github.com/lkhphuc/Matplotlib-3D-Basemap)
 
 ## The data
+
 We will try to plot the data from a real satellite [**COSMIC** ](http://cdaac-www.cosmic.ucar.edu/cdaac/doc/formats.html).
 We will plot a scientific information - *Electron density* or *TEC (Total Electron Content)* with respect to  *longtitude, latitude, altitude* in 3D map.
 
@@ -35,11 +39,13 @@ from mpl_toolkits.mplot3d import Axes3D
 from netCDF4 import Dataset
 ```
 
+
 ## Create a 3d normal figure
 ```python
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 ```
+
 
 ## Draw the Earth map using Basemap
 
@@ -72,6 +78,7 @@ ax.set_zlim(0., 1000.)
 At this point you can add `plt.show()` and see a nice Basemap in an interactive 3D projection.
 
 ![A basemap](img/matplotlib-3d-basemap/basemap-3d.png)
+
 
 
 ## Get the real data
@@ -107,6 +114,7 @@ for i, file in enumerate(os.listdir(directory)):
 
 Now at every timestep `i`, we have a corresponding `lon[i], lat[i], msl_alt[i], elec_dens[i] and tec_cal[i]`.
 
+
 ## Scatter map
 All over our plot, there will be points scatter around it and each points will represents the intensity of either _Electron density_ or _Total Electron Content_.
 
@@ -116,6 +124,7 @@ p = ax.scatter(lons, lats, msl_alt, c=tec_cal, cmap='jet')
 # Add a colorbar to reference the intensity
 fig.colorbar(p, label='alibrated Total Electronic Content (TECU)')
 ```
+
 
 ## Show time
 Now run `plt.show()` and you can have this nice 3D earth map.

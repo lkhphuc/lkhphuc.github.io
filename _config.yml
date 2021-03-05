@@ -20,3 +20,5 @@ page:
 editor: nvim
 git:
   branch: master
+plugins:
+  - jekyll-redirect-from
