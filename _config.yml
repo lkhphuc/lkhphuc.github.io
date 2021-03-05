@@ -1,0 +1,22 @@
+baseurl:
+title: Phúc you
+subtitle:
+author: Phúc H. Lê Khắc
+simple_search: http://google.com/search
+description: Thought transfer from Phúc to you via a fuzzy, lossy and highly compressed representation.
+name: tufte
+markdown: kramdown
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+permalink: /articles/:short_year/:title
+timezone:  	Europe/Dublin
+excerpt_separator: <!--more-->  # you can specify your own separator, of course.
+exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'UploadToGithub.Rakefile', 'README.md']
+post:
+  template: _post.txt
+  extension: md
+page:
+  template: _page.txt
+  extension: md
+editor: nvim
+git:
+  branch: master
