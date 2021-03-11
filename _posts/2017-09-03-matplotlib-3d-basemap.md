@@ -13,7 +13,7 @@ In this tutorial, I will show you how to plot a 3-Dimension Earth Map from satel
 
 The result will be something like this with interaction:
 
-![](img/matplotlib-3d-basemap/Elec_dens.png)
+{% maincolumn 'img/matplotlib-3d-basemap/Elec_dens.png' '' %}
 
 
 > All the sample data and code file can be found here: [https://github.com/lkhphuc/Matplotlib-3D-Basemap](https://github.com/lkhphuc/Matplotlib-3D-Basemap)
@@ -77,26 +77,10 @@ ax.set_zlim(0., 1000.)
 
 At this point you can add `plt.show()` and see a nice Basemap in an interactive 3D projection.
 
-![A basemap](img/matplotlib-3d-basemap/basemap-3d.png)
-
-
-
-## Get the real data
-
-Assume all the data _nc_ files are in the same folder:
-
-```python
-# empty array for place holder
-lons = np.array([]) # longtitude
-lats = np.array([]) # latitude
-msl_alt = np.array([]) # altitude
-elec_dens = np.array([]) # electron density
-tec_cal = np.array([]) # calibrated total electron content
-
-# Make sure your working directory is the directory contains this script and the data file.
-directory = os.fsencode('.')
+{% maincolumn 'img/matplotlib-3d-basemap/basemap-3d.png' 'A basemap.')
 
 # Import data to illustrate
+```python
 for i, file in enumerate(os.listdir(directory)):
     filename = os.fsdecode(file)
     if (filename.startswith("ionPrf") and i < 20):
@@ -129,4 +113,4 @@ fig.colorbar(p, label='alibrated Total Electronic Content (TECU)')
 ## Show time
 Now run `plt.show()` and you can have this nice 3D earth map.
 
-![A full TEC plot](img/matplotlib-3d-basemap/tec_cal.png)
+{% maincolumn 'img/matplotlib-3d-basemap/tec_cal.png' 'A full TEC plot.' %}

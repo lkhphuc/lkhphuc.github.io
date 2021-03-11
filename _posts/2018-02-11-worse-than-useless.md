@@ -4,18 +4,18 @@ date:   2018-02-11
 title: Tệ hơn cả vô dụng, một Hệ thống giám sát tài chính
 subtitle: Bản dịch bài nói Worse than useless, Financial Surveillance
 categories: bitcoin
-permalink: /posts/2018-02-11-worse-than-useless.md
+permalink: /posts/2018-02-11-worse-than-useless
 ---
 
 
 Andreas Antonopoulos là một lập trình viên và diễn giả nổi tiếng về Bitcoin và những ảnh hưởng của nó lên xã hội loài người. Một trong những bài nói của ông mà tôi thấy hay nhất có tiêu đề: "Tệ hơn cả vô dụng: Hệ thống giám sát tài chính". Trong bài nói này ông đã chỉ ra sự giả tạo của hệ thống ngân hàng, nhấn mạnh tầm quan trọng của sự ẩn danh và lý giải tại sao Bitcoin có thể làm cho xã hội tốt đẹp hơn, hay ít ra là không làm cho nó tệ hơn như những gì hệ thống giám sát tài chính đang làm.
 
-Dưới đây tôi xin dịch lại bài nói chuyện của Andreas với mong muốn những kiến thức và ý tưởng của ông có thể tiếp cận được với càng nhiều người càng tốt, đặc biệt là cộng đồng những người trẻ Việt Nam như tôi. Tôi cũng đã nộp bản dịch phụ đề Tiếng Việt cho video trên Youtube nhưng không biết khi nào được duyệt. Nếu ai muốn thì có thể xem trực tiếp video bài nói chuyện của Andreas tại [đây](https://www.youtube.com/watch?v=n4F-h4xuXMk&t=872s&ab_channel=aantonop). Tuy nhiên bản dịch dưới đã được tôi sửa format và câu văn cho tự nhiên hơn so với bản dịch phụ đề thô (sẽ có) trên Youtube.
-
 <!--more-->
 
-![Video](https://www.youtube.com/watch?v=n4F-h4xuXMk&t=872s&ab_channel=aantonop)
+Dưới đây tôi xin dịch lại bài nói chuyện của Andreas với mong muốn những kiến thức và ý tưởng của ông có thể tiếp cận được với càng nhiều người càng tốt, đặc biệt là cộng đồng những người trẻ Việt Nam như tôi. Tôi cũng đã nộp bản dịch phụ đề Tiếng Việt cho video trên Youtube nhưng không biết khi nào được duyệt. Nếu ai muốn thì có thể xem trực tiếp video bài nói chuyện của Andreas tại [đây](https://www.youtube.com/watch?v=n4F-h4xuXMk&t=872s&ab_channel=aantonop). Tuy nhiên bản dịch dưới đã được tôi sửa format và câu văn cho tự nhiên hơn so với bản dịch phụ đề thô (sẽ có) trên Youtube.
 
+
+{% maincolumn 'https://www.youtube.com/watch?v=n4F-h4xuXMk&t=872s&ab_channel=aantonop' 'Video' %}
 
 # Tệ hơn cả vô dụng: Hệ thống giám sát tài chính
 
@@ -35,11 +35,9 @@ Tại sao việc nhớ lấy ý niệm "không được làm hại" này lại r
 Hệ thống ngân hàng hiện đại được đưa vào hoạt động theo Đạo luật Bảo mật Ngân hàng năm 1970, được hình thành mà không dựa trên bất kì cơ sở khoa học. Nó dựa trên sự suy nghĩ đạo đức công chính rằng "người xấu" không nên có quyền tiếp cận tiền và miễn là chúng ta tin tưởng vào những người có thẩm quyền nói cho chúng ta biết những người xấu đó là ai (và giả định rằng họ không phải là những người xấu), thì rồi mọi thứ sẽ đâu ra đó thôi.
 
 Nếu bạn chỉ trích ý tưởng này, người ta sẽ không chứng minh hoặc thuyết phục bạn bằng sự thật, dữ liệu dựa trên khoa học. Bạn sẽ bị cáo buộc là không có đủ đạo đức công chính để hiểu rằng chúng ta phải (trong hàng đống lý do) *"bảo vệ trẻ em."*
-
 - "Sao không ai nghĩ tới những đứa trẻ vậy?"
 
 Vì những tên tội phạm thì nó ở ngoài đó. Có những người xấu xa, và nếu những người xấu đó có thể sử dụng tiền họ có thể dùng nó để làm những điều xấu. Rất khó để truy tố những điều xấu nhưng lại rất dễ dàng để truy tố tiền.
-
 Và thế là chúng ta truy tố tiền. Rồi cách đó có hoạt động không?
 
 #### Không.
@@ -110,10 +108,10 @@ Những gì chúng ta đang làm với Bitcoin không chỉ là chơi đùa vớ
 
 Tôi quan tâm đến việc tạo ra hòa bình thông qua công lý; công lý bắt đầu với khả năng giao dịch một cách tự do của mỗi con người trên hành tinh này, với sự riêng tư, với bất cứ ai, bất cứ nơi nào, bất cứ lúc nào.
 
-## *Không thể kiểm duyệt, không thể ngăn chặn, hoàn toàn ẩn danh.*
+
+## Không thể kiểm duyệt, không thể ngăn chặn, hoàn toàn ẩn danh.
 
 - Bạn nghĩ rằng cuộc chiến về kích thước block là xấu? (nd: Google Bitcoin và Bcash để biết thêm).
-
 - Bạn nghĩ rằng những dư luận viên chuyên đi cãi chày cãi cối trên các phương tiện truyền thông xã hội, ném tiền ra để gây ảnh hưởng đến ý kiến trên mọi phương diện là xấu?
 
 Có những người ngay bây giờ đang nghiên cứu lớp tiếp theo của Bitcoin, bao gồm zero-knowlege range proof để tạo ra những giao dịch bí mật. CoinJoins trên quy mô lớn, các kênh thanh toán qua giao thức TOR ẩn danh, không thể truy xét và không thể ngăn cản được.
@@ -121,27 +119,22 @@ Có những người ngay bây giờ đang nghiên cứu lớp tiếp theo của
 Mọi người hỏi tôi: "Bạn nghĩ vấn đề lớn nhất với Bitcoin là gì?
 
 - Là khả năng nhân rộng phát triển (scale)?
-
 - Là sự gian lận?
-
 - Là việc đào bitcoin bị tập trung hóa?
 
 Không, **đó là chúng ta không có đủ sự ẩn danh. Chúng ta không có đủ sự riêng tư. Chúng ta nên khắc phục vấn đề đó trước khi tiền mã hóa trở nên quá phổ biến.** Việc tiếp nhận một nền tảng mà không có đủ sự riêng tư là cực kỳ nguy hiểm. Nếu bạn là người duy nhất thực hiện những giao dịch nặc danh, bạn không hề nặc danh.
 
 Những gì chúng ta cần là phổ biến sự riêng tư. Đây không nên là một lựa chọn mà tôi phải bấm chọn trong ví Samourai của tôi nói rằng 'Sử dụng Tor'. Nó nên được mặc định trên tất cả các ví, tất cả mọi lúc. Không nên có bất cứ giao dịch nào mà không bí mật.
 
-Đây là điều thú vị: nếu bạn hỏi các ngân hàng rằng họ có muốn có các giao dịch nặc danh không, họ sẽ trả lời rằng đương nhiên là muốn! "Công nghệ sổ cái phân tán" (Distributed ledger) đang được xây dựng với sự ẩn danh. Họ đang sử dụng "bằng chứng không-kiến ​​thức phạm vi" (Zero-Knowledge Range Proof), bộ trộn lẫn để tạo ra các giao dịch bí mật. Họ đang cố gắng xây dựng hệ thống thanh toán bí mật và ẩn danh. Tại sao? Bởi vì họ không thể tin tưởng vào *đứa chó đẻ khốn nạn* ở phía đối diện cái bàn của họ, những người đang điều hành các ngân hàng đối thủ. Nếu họ biết những gì đang xảy ra trên hệ thống đối thủ, họ sẽ chạy trước trong mỗi giao dịch của bạn, Pump và dump (nd: bơm giá lên cao và bán nhanh) tất cả các loại tài sản. Tại sao?
+Đây là điều thú vị: nếu bạn hỏi các ngân hàng rằng họ có muốn có các giao dịch nặc danh không, họ sẽ trả lời rằng đương nhiên là muốn! "Công nghệ sổ cái phân tán" (Distributed ledger) đang được xây dựng với sự ẩn danh. Họ đang sử dụng Zero-Knowledge Range Proof, bộ trộn lẫn để tạo ra các giao dịch bí mật. Họ đang cố gắng xây dựng hệ thống thanh toán bí mật và ẩn danh. Tại sao? Bởi vì họ không thể tin tưởng vào *đứa chó đẻ khốn nạn* ở phía đối diện cái bàn của họ, những người đang điều hành các ngân hàng đối thủ. Nếu họ biết những gì đang xảy ra trên hệ thống đối thủ, họ sẽ chạy trước trong mỗi giao dịch của bạn, Pump và dump (nd: bơm giá lên cao và bán nhanh) tất cả các loại tài sản. Tại sao?
 Bởi vì đó là những gì họ làm mỗi ngày. Tất nhiên, vì họ không thể tin tưởng lẫn nhau, họ hiểu được nhu cầu cho sự riêng tư. Họ sẽ xây dựng blockchains riêng của họ, mạng lưới thanh toán và bù trừ của họ và họ sẽ đảm bảo chắc chắn rằng họ có sự bảo mật, riêng tư, ẩn danh, và khả năng chối từ. Họ sẽ đảm bảo rằng họ có tất cả những điều đó để họ có thể tiếp tục kinh doanh như thường lệ.
 
 Họ sẽ đạt được độ bí mật của họ.
 
 Câu hỏi bây giờ là:
 - Liệu chúng ta có có được điều đó cho chúng ta?
-
 - Liệu chúng ta có khẳng định và giành lấy quyền con người của mình về sự riêng tư?
-
 - Liệu chúng ta sẽ sử dụng công nghệ này mà không để nó nô lệ thế giới thông qua một nền giám sát tài chính toàn trị mà là để giải phóng thế giới?
-
 - Liệu chúng ta sẽ làm điều gì đó mà đầu tiên hết, sẽ không gây hại?
 
 Cảm ơn.

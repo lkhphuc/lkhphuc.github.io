@@ -34,7 +34,7 @@ First, refer to this [page](https://api.slack.com/slash-commands) to know the ba
 - Go to this page and click on **Create New App**, fill in the name and done, it's easy as that.
 - Now in your Slack app page, go to *Slash command* and create a new command with your choice of name. *Request URL* field is where the Slash command will send the HTTP request to, type in any URL such as *https://example.com*, we will comeback and edit this later.
 
-![Create slash](img/aws-lambda/create-slash.png)
+{% maincolumn 'img/aws-lambda/create-slash.png' 'Create slash' %}
 
 ## Step 2: Create Lambda function to handle the request
 
@@ -47,7 +47,7 @@ Sign in to your AWS Console and head for Lambda page then press *Create function
     The **API Gateway** also integrates well with Lambda function that it can trigger it when some activities happen with the URL from **API Gateway** - just exactly what we need.
 
 
-![API Gateway](img/aws-lambda/api-gateway.png)
+{% maincolumn 'img/aws-lambda/api-gateway.png' 'API Gateway' %}
 
 * Next step, enter a name, description, choose Python 3.6 as Runtime. In the code entry paste this in:
 
@@ -110,7 +110,7 @@ In the code above, there're some **Keys** that we need to create and assign befo
 Now we need to create a User with admin privileges to have our *id and key*.
 Open a new tab and go to *AWS IAM* console, create a new *User*, and give it *Programmatic access* type.
 
-![IAM Access](img/aws-lambda/iam-access.png)
+{% maincolumn 'img/aws-lambda/iam-access.png' 'IAM Access' %}
 
 Now create a user group with admin access, in the final step, you will be provided with an *Access key ID* and *Secret Access key*, take note or copy it to somewhere as you can only see the *Secret Access key* **ONCE**.
 
@@ -118,7 +118,7 @@ Now create a user group with admin access, in the final step, you will be provid
 
 Go back to your Slack App on Slack API site, in the *Basic Information* section, take note on the *Verification Token* there.
 
-![exp-token](img/aws-lambda/exp-token.png)
+{% maincolumn 'img/aws-lambda/exp-token.png' 'exp-token' %}
 
 
 ## Step 5: Provide the access key to the Lambda function
@@ -127,14 +127,14 @@ Now switch back to the Lambda function tab. As you can see from  the code, we us
 
 AWS Lambda provides a very easy way for us to declare environment variables. Just scroll down a bit, in the *Environment variables* fields, provide these variables with the Key you just created as follow, with *expected_token* is *Verification token* in step 5 and the other 2 variables are the *id and key* from step 4:
 
-![env-var](img/aws-lambda/env-var.png)
+{% maincolumn 'img/aws-lambda/env-var.png' 'env-var' %}
 
 ## Step 6: Get the trigger URL and paste it in Slash command
 
 After you've create a Lambda function with API Gateway trigger, go to *Triggers* tab, click on the *API Gateway* and copy the *Invoke URL*.
 Go back to *Slack App*, at *Slash command* edit the *Request URL* to the *Invoke URL*.
 
-![trigger](img/aws-lambda/trigger.png)
+{% maincolumn 'img/aws-lambda/trigger.png' 'trigger' %}
 
 Now every time the *Slash command* is called, an HTTP request contains the information about the *Slash command* will be sent to the URL above, which passes down the information to our Lambda function and triggers it to work.
 
@@ -142,7 +142,7 @@ Now every time the *Slash command* is called, an HTTP request contains the infor
 
 Well, the header says it all. Just go to *OAuth & Permissions*, scroll down to *Scopes*, add a fews scopes that make sense for you app, scroll it back up and click install to your workspace.
 
-![oauth](img/aws-lambda/oauth.png)
+{% maincolumn 'img/aws-lambda/oauth.png' 'oauth' %}
 
 ## Step 8: Create SNS event so Lambda function can publish to it
 
@@ -199,6 +199,6 @@ You have a Slash app that triggered a Lambda that return an acknowledgement mess
 
 The second Lambda function can also respond to the original *Slash command* through a *Webhook response URL.*
 
-![Summary](img/aws-lambda/summary.png)
+{% maincolumn 'img/aws-lambda/summary.png' '' %}
 
 Here is an example of my Slash command, the first response is from the first Lambda function. The second line, in bolder font, is from the second Lambda function.
