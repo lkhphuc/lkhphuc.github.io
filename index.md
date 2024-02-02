@@ -4,16 +4,16 @@ title: Phúc H. Lê Khắc
 ---
 
 <img align="right" width="200" height="200" src="img/portrait.jpg">
-{% newthought 'Hi there,'%} I'm Phuc from Vietnam.
+{% newthought 'Hi there,'%} I'm Phuc.
  
 
-Currently I'm a Ph.D student at the [ML-Labs](https://ml-labs.ie/) cohort, based in Dublin City University, Ireland.
-I do research related to Deep Learning in Multimedia, especially with video, under the supervison of Professor [Alan Smeaton](https://www.computing.dcu.ie/~asmeaton/index.html) and Professor [Graham Healy](https://www.computing.dcu.ie/~ghealy/).
-I have broad interest from theoretical to practical aspects of building intelligent system, with focus on Representation Learning, Unsupervised / Self-supervised Learning and Differentiable Computing.
+Currently I'm a Ph.D student at the [ML-Labs](https://ml-labs.ie/) cohort, based in Dublin City University, Ireland, under the supervison of Professor [Alan Smeaton](https://www.computing.dcu.ie/~asmeaton/index.html) and Dr. [Graham Healy](https://www.computing.dcu.ie/~ghealy/).
+
+I have interest from theoretical to practical aspects of building intelligent system, with focus on Representation Learning, Unsupervised / Self-supervised Learning and Differentiable Computing.
 
 # Research 
 
-{% newthought 'For the latest update'%} of my research, see: [Google Scholar](https://scholar.google.com/citations?user=vkQF1egAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Phuc-H.-Le-Khac/1994194269), [ORCID iD](https://orcid.org/0000-0002-0504-5844)
+{% newthought 'For the latest update'%} of my research, see: [Google Scholar](https://scholar.google.com/citations?user=vkQF1egAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Phuc-H.-Le-Khac/1994194269), [ORCID iD](https://orcid.org/0000-0002-0504-5844).
 
 ### Contrastive Representation Learning: A Framework and Review
 
@@ -35,5 +35,24 @@ I enjoy developing and contributing to Open Source Software in my free time. Bel
 
 
 # Service
-
+- Reviewer for: ICLR 2022, NeurIPS 2022
 - **Content editor for [SigMM.org](http://sigmm.org)** (2019-now)
+
+
+# Professional Acknowledgments
+I have treasured over the years some unsolicited comments, feedbacks and good wishes from people that I deeply admired and respected. 
+I decided to publish it here as some sort of "recommendation" or "testimonial", and also to remind myself more often.
+
+Thank you all very much, you helped me to be who I am today and will continue to influence who I will become in the future.
+
+{%epigraph '... I was particularly happy that he always stayed interested in what we actually do, and was always happy to learn more, even when it was far outside of his area of expertise. ... We are all very grateful for the great work he did for us and we are sorry to see him go.'   'Christian B.'   '' }
+{%epigraph 'He is lying - his writing actually *is* good :) '  'Jeremy Howard' '[Tweet](https://twitter.com/jeremyphoward/status/1073955529536335873)'}
+
+{% epigraph 'I appreciate your help ever. Some messages to you.
+
+ After going abroad, you will see a lot of talented people, who are not comparable with me or something. You have a lot of chance to learn from them, if you keep having respect. 
+And if you keep making efforts and studying, sometimes they will help you. Then, your future is brilliant.
+
+ I hope you achieve something great success. Good luck! ' 'Sosa-san' '' %}
+
+ 
