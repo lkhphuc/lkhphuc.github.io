@@ -46,13 +46,9 @@ I decided to publish it here as some sort of "recommendation" or "testimonial", 
 Thank you all very much, you helped me to be who I am today and will continue to influence who I will become in the future.
 
 {%epigraph '... I was particularly happy that he always stayed interested in what we actually do, and was always happy to learn more, even when it was far outside of his area of expertise. ... We are all very grateful for the great work he did for us and we are sorry to see him go.'   'Christian B.'   '' }
+
 {%epigraph 'He is lying - his writing actually *is* good :) '  'Jeremy Howard' '[Tweet](https://twitter.com/jeremyphoward/status/1073955529536335873)'}
 
-{% epigraph 'I appreciate your help ever. Some messages to you.
-
- After going abroad, you will see a lot of talented people, who are not comparable with me or something. You have a lot of chance to learn from them, if you keep having respect. 
-And if you keep making efforts and studying, sometimes they will help you. Then, your future is brilliant.
-
- I hope you achieve something great success. Good luck! ' 'Sosa-san' '' %}
+{% epigraph 'I appreciate your help ever. Some messages to you. After going abroad, you will see a lot of talented people, who are not comparable with me or something. You have a lot of chance to learn from them, if you keep having respect. And if you keep making efforts and studying, sometimes they will help you. Then, your future is brilliant. I hope you achieve something great success. Good luck! ' 'Sosa-san' ' ' %}
 
  
