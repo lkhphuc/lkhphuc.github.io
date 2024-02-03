@@ -1,4 +1,4 @@
-baseurl: /lkhphuc
+baseurl: /lkhphuc.github.io
 title: Phúc you
 subtitle:
 author: Phúc H. Lê Khắc
@@ -11,10 +11,6 @@ permalink: /articles/:short_year/:title
 timezone:  	Europe/Dublin
 excerpt_separator: <!--more-->  # you can specify your own separator, of course.
 exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'UploadToGithub.Rakefile', 'README.md']
-jekyll_analytics:
-  GoogleAnalytics:          # Add, if you want to track with Google Analytics
-    id:  UA-191429940-1     # Required - replace with your tracking id
-    anonymizeIp: true       # Optional - Default: false - set to true for anonymized tracking
 post:
   template: _post.txt
   extension: md
@@ -27,3 +23,7 @@ git:
 plugins:
   - jekyll-redirect-from
   - jekyll-analytics
+jekyll_analytics:
+  GoogleAnalytics:          # Add, if you want to track with Google Analytics
+    id:  UA-191429940-1     # Required - replace with your tracking id
+    anonymizeIp: true       # Optional - Default: false - set to true for anonymized tracking
