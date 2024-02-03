@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Chaining multiple AWS Lambda functions to host a Slack app</title>
+  <meta name="description" content="If you somehow find out about this tutorial, you probably already know about AWS Lambda and Slack app, but I will just give an short description about it any...">
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  
+<!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: [
+      "MathMenu.js",
+      "MathZoom.js",
+      "AssistiveMML.js",
+      "a11y/accessibility-menu.js"
+    ],
+    jax: ["input/TeX", "output/CommonHTML"],
+    TeX: {
+      extensions: [
+        "AMSmath.js",
+        "AMSsymbols.js",
+        "noErrors.js",
+        "noUndefined.js",
+      ]
+    }
+  });
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>  
+
+
+  <link rel="stylesheet" type="text/css" href="/lkhphuc.github.io/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/lkhphuc.github.io/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="/lkhphuc.github.io/posts/2017-09-20-host-sclak-app-on-aws-lambda">
+
+  <link rel="alternate" type="application/rss+xml" title="Phúc you" href="/lkhphuc.github.io/feed.xml" />
+
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-191429940-1', 'auto');
+	ga('send', 'pageview', { 'page': location.pathname + location.search + location.hash});
+	ga('set', 'anonymizeIp', true);
+    </script>
+    <!-- End Google Analytics -->
+    </head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+	<!-- <a href="/lkhphuc.github.io/"><img class="badge" src="/lkhphuc.github.io/assets/img/badge_1.png" alt="CH"></a> -->
+	
+		
+  	
+		
+		    
+		      <a href="/lkhphuc.github.io/">Phúc H. Lê Khắc</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/lkhphuc.github.io/posts">Posts</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/lkhphuc.github.io/css/print.css"></a>
+		    
+	    
+  	
+		
+  	
+		
+		    
+		      <a href="/lkhphuc.github.io/redirects.json"></a>
+		    
+	    
+  	
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Chaining multiple AWS Lambda functions to host a Slack app</h1>
+<p class="subtitle">September 20, 2017</p>
+
+<p>If you somehow find out about this tutorial, you probably already know about AWS Lambda and Slack app, but I will just give an short description about it anyway.</p>
+
+<!--more-->
+
+<ul>
+  <li><strong>AWS Lambda</strong> is a cloud platform by Amazon where the unit of code that you publish is <em>function</em>, this way you can write a function and having it online without having to care about setting up server or scaling. AWS Lambda also incorporates well with orther AWS services.</li>
+  <li><strong>Slack app</strong> is an application that you can integrate into your Slack channel and have it automate tasks for the team. In this tutorial, we will built a particular type of Slack app, that is a <strong>Slash command</strong>.</li>
+</ul>
+
+<h3 id="heres-the-problem">Here’s the problem</h3>
+
+<p>Slash command will send an HTTP POST request to triggered a Lambda function and demands a respond back in less than 3 seconds. This is OK if the Lambda function is designed to do some light job and can finished under 3 seconds, but what if the Lambda function need to do more heavylifting job, the Slash command will declared that there was problem with the server, which is not cool at all for the heavy-lifting Lambda function.</p>
+
+<h3 id="the-solution">The solution:</h3>
+
+<p>Simple enough, we will split the Lambda function we want into two Lambda functions.</p>
+<ul>
+  <li>The first Lambda will receive information from the Slash command, preprocess the data if necessary, and then trigger the second Lambda along with the data then issues a respond to Slash command says that the command is being processed. All those step should be done well under 3 seconds.</li>
+  <li>The second Lambda receive the information as request from the first Lambda, do its heavylifting job and then respond back to Slash command through a Webhook from Slash command that was passed down from the first Lambda.</li>
+  <li>The bridge between two Lambda functions, the one enable triggering a Lambda function with another Lambda functions is <em>AWS Simple Notification Service (SNS)</em></li>
+</ul>
+
+<p>Now I will walks you through the steps to create a Slack’s Slash command, create first Lambda function, create a SNS event and a second Lambda function that responds to the original Slash command.</p>
+
+<h2 id="step-1-create-slacks-slash-command">Step 1: Create Slack’s Slash command</h2>
+
+<p>First, refer to this <a href="https://api.slack.com/slash-commands">page</a> to know the basic about Slash command. To create a Slash command, we first need to create a Slack App.</p>
+<ul>
+  <li>Go to this page and click on <strong>Create New App</strong>, fill in the name and done, it’s easy as that.</li>
+  <li>Now in your Slack app page, go to <em>Slash command</em> and create a new command with your choice of name. <em>Request URL</em> field is where the Slash command will send the HTTP request to, type in any URL such as <em>https://example.com</em>, we will comeback and edit this later.</li>
+</ul>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/create-slash.png" /><figcaption class="maincolumn-figure">Create slash</figcaption></figure>
+
+<h2 id="step-2-create-lambda-function-to-handle-the-request">Step 2: Create Lambda function to handle the request</h2>
+
+<p>Sign in to your AWS Console and head for Lambda page then press <em>Create function</em>.</p>
+<ul>
+  <li>Click the orange button <em>Author from scratch</em> - we will upload the code later.</li>
+  <li>Now in the <em>Configure triggers</em> step, click on the square that point to the Lambda function and select <strong>API Gateway</strong> as our trigger.</li>
+</ul>
+
+<p>!!!
+    For those who wonder, <strong>API Gateway</strong> will setup an URL that handles the HTTP request from Slash command.
+    The <strong>API Gateway</strong> also integrates well with Lambda function that it can trigger it when some activities happen with the URL from <strong>API Gateway</strong> - just exactly what we need.</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/api-gateway.png" /><figcaption class="maincolumn-figure">API Gateway</figcaption></figure>
+
+<ul>
+  <li>Next step, enter a name, description, choose Python 3.6 as Runtime. In the code entry paste this in:</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="c1"># Token use to verify the request really came from our Slash command
+</span><span class="n">expected_token</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'expect_token'</span><span class="p">]</span>
+
+<span class="c1"># Function to create a respond for the Slash command,
+# it's must contain a statusCode, body and header
+</span><span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="n">err</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">'statusCode'</span><span class="p">:</span> <span class="s">'400'</span> <span class="k">if</span> <span class="n">err</span> <span class="k">else</span> <span class="s">'200'</span><span class="p">,</span>
+        <span class="s">'body'</span><span class="p">:</span> <span class="n">err</span><span class="p">.</span><span class="n">message</span> <span class="k">if</span> <span class="n">err</span> <span class="k">else</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">res</span><span class="p">),</span>
+        <span class="s">'headers'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="c1"># The actual function that handle the HTTP request
+</span><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="c1"># Get the data posted by the Slash command
+</span>    <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s">'body'</span><span class="p">])</span>
+    <span class="c1"># The data format is described at https://api.slack.com/slash-commands
+</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s">'token'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="n">expected_token</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">respond</span><span class="p">(</span><span class="nb">Exception</span><span class="p">(</span><span class="s">'Invalid request token'</span><span class="p">))</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s">'user_name'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s">'channel_name'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">user</span> <span class="o">+</span> <span class="s">",the command is being executed for the channel "</span> <span class="o">+</span> <span class="n">channel</span>
+
+    <span class="n">sns_publish</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">respond</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+
+<span class="c1"># Function to publish message to SNS event,
+# this event will inturn trigger our second lambda function
+</span><span class="k">def</span> <span class="nf">sns_publish</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="p">.</span><span class="n">client</span><span class="p">(</span>
+                <span class="s">'sns'</span><span class="p">,</span> 
+                <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'aws_access'</span><span class="p">],</span>
+                <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'aws_secret'</span><span class="p">],</span>
+                <span class="n">region_name</span><span class="o">=</span><span class="s">'ap-southeast-1'</span>
+            <span class="p">)</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">TopicArn</span><span class="o">=</span><span class="s">'to-be-edited-later'</span><span class="p">,</span> <span class="n">Message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In the code above, there’re some <strong>Keys</strong> that we need to create and assign before our function can run. Let’s do that in the next steps.</p>
+
+<h2 id="step-3-create-a-aws_access_key_id-and-aws_secret_access_key">Step 3: Create a <em>aws_access_key_id</em> and <em>aws_secret_access_key</em></h2>
+
+<blockquote>
+  <p>“AWS Identity and Access Management (IAM) is a web service that helps you securely control access to AWS resources for your users. You use IAM to control who can use your AWS resources (authentication) and what resources they can use and in what ways (authorization).”</p>
+</blockquote>
+
+<p>Now we need to create a User with admin privileges to have our <em>id and key</em>.
+Open a new tab and go to <em>AWS IAM</em> console, create a new <em>User</em>, and give it <em>Programmatic access</em> type.</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/iam-access.png" /><figcaption class="maincolumn-figure">IAM Access</figcaption></figure>
+
+<p>Now create a user group with admin access, in the final step, you will be provided with an <em>Access key ID</em> and <em>Secret Access key</em>, take note or copy it to somewhere as you can only see the <em>Secret Access key</em> <strong>ONCE</strong>.</p>
+
+<h2 id="step-4-get-expected_token">Step 4: Get <em>expected_token</em></h2>
+
+<p>Go back to your Slack App on Slack API site, in the <em>Basic Information</em> section, take note on the <em>Verification Token</em> there.</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/exp-token.png" /><figcaption class="maincolumn-figure">exp-token</figcaption></figure>
+
+<h2 id="step-5-provide-the-access-key-to-the-lambda-function">Step 5: Provide the access key to the Lambda function</h2>
+
+<p>Now switch back to the Lambda function tab. As you can see from  the code, we use 3 weird variables, has the form <code class="language-plaintext highlighter-rouge">os.environ['whatever']</code>. Each of these variable is declared in the environment that our code is executed upon, this way we don’t have to explicitly give up the <em>secret</em> on our code.</p>
+
+<p>AWS Lambda provides a very easy way for us to declare environment variables. Just scroll down a bit, in the <em>Environment variables</em> fields, provide these variables with the Key you just created as follow, with <em>expected_token</em> is <em>Verification token</em> in step 5 and the other 2 variables are the <em>id and key</em> from step 4:</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/env-var.png" /><figcaption class="maincolumn-figure">env-var</figcaption></figure>
+
+<h2 id="step-6-get-the-trigger-url-and-paste-it-in-slash-command">Step 6: Get the trigger URL and paste it in Slash command</h2>
+
+<p>After you’ve create a Lambda function with API Gateway trigger, go to <em>Triggers</em> tab, click on the <em>API Gateway</em> and copy the <em>Invoke URL</em>.
+Go back to <em>Slack App</em>, at <em>Slash command</em> edit the <em>Request URL</em> to the <em>Invoke URL</em>.</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/trigger.png" /><figcaption class="maincolumn-figure">trigger</figcaption></figure>
+
+<p>Now every time the <em>Slash command</em> is called, an HTTP request contains the information about the <em>Slash command</em> will be sent to the URL above, which passes down the information to our Lambda function and triggers it to work.</p>
+
+<h2 id="step-7-give-your-scope-slack-app-some-permission-scopes-and-install-it-to-your-workspace">Step 7: Give your scope Slack App some permission scopes and install it to your workspace</h2>
+
+<p>Well, the header says it all. Just go to <em>OAuth &amp; Permissions</em>, scroll down to <em>Scopes</em>, add a fews scopes that make sense for you app, scroll it back up and click install to your workspace.</p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/oauth.png" /><figcaption class="maincolumn-figure">oauth</figcaption></figure>
+
+<h2 id="step-8-create-sns-event-so-lambda-function-can-publish-to-it">Step 8: Create SNS event so Lambda function can publish to it</h2>
+
+<p>This step is simple, just go to <em>AWS SNS console</em>, create a <em>Topic</em>, name it and copy the <em>ARN</em> of the Topic you just created.
+Now go back to the code of the first Lambda function, in the <em>TopicArn</em> in <em>sns_publish</em> function, edit it to be the newly generated <em>ARN</em>.</p>
+
+<h1 id="hooray">Hooray.</h1>
+
+<p>At this step, you now have a Slash command that can trigger a Lambda function throught <em>API Gateway</em>, and have that Lambda function publish to a <em>SNS Topic</em>.</p>
+
+<p>In the next steps, we will create another Lambda function that is triggered when an event is published to this <em>SNS Topic</em>, have it done something and then respond back to the original Slash command.</p>
+
+<h2 id="step-9-create-second-lambda-function-triggered-by-sns-event">Step 9: Create second Lambda function triggered by SNS event</h2>
+
+<p>Repeat step 1 and 2, but in step 2, instead of choosing <em>API Gateway</em>, choose <em>SNS</em> and select the <em>SNS event</em> we created above.</p>
+
+<p>In the code entry, paste this in:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="c1"># Function to create a body respond for the Slash command, it's must contain a statusCode, body and header
+</span><span class="k">def</span> <span class="nf">respond</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">"response_type"</span><span class="p">:</span> <span class="s">"in_channel"</span><span class="p">,</span>
+        <span class="s">"text"</span><span class="p">:</span> <span class="n">res</span>
+    <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="c1"># Read the message pass from the event
+</span>    <span class="n">message</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s">'Records'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'Sns'</span><span class="p">][</span><span class="s">'Message'</span><span class="p">]</span>
+    <span class="c1"># Load it into python dict
+</span>    <span class="n">message</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="c1">###
+</span>    <span class="c1"># Your heavylifting work done here
+</span>    <span class="c1"># Take all the time you want, no need to worry about 3s Slack limit
+</span>    <span class="c1">###
+</span>
+    <span class="c1"># Get the response url
+</span>    <span class="n">response_url</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="s">'response_url'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#Send the response
+</span>    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">response_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">respond</span><span class="p">(</span><span class="s">"Your response here"</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<h1 id="finish">Finish</h1>
+
+<p>Oh yeah. Now save the second Lambda functions and then we’re done.</p>
+
+<p>You have a Slash app that triggered a Lambda that return an acknowledgement message function through <em>API Gateway</em>, this Lambda function in turn triggers a second Lambda function that do heavylifting work through AWS SNS.</p>
+
+<p>The second Lambda function can also respond to the original <em>Slash command</em> through a <em>Webhook response URL.</em></p>
+
+<figure><img src="/lkhphuc.github.io/img/aws-lambda/summary.png" /><figcaption class="maincolumn-figure"></figcaption></figure>
+
+<p>Here is an example of my Slash command, the first response is from the first Lambda function. The second line, in bolder font, is from the second Lambda function.</p>
+
+
+
+    </article>
+    <span class="print-footer">Chaining multiple AWS Lambda functions to host a Slack app - September 20, 2017 - Phúc H. Lê Khắc</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li><a href="mailto:phuc@lkhphuc.com"><span class="icon-mail3"></span></a></li>    
+    
+      <li>
+        <a href="//www.twitter.com/lkhphuc"><span class="icon-twitter"></span></a>
+      </li>
+    
+      <li>
+        <a href="//github.com/lkhphuc"><span class="icon-github"></span></a>
+      </li>
+    
+      <li>
+        <a href="//www.linkedin.com/in/lkhphuc"><span class="icon-linkedin"></span></a>
+      </li>
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2024 &nbsp;&nbsp;PHÚC H. LÊ KHẮC</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for  </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
